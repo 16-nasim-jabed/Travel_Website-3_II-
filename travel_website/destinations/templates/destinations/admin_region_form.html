@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% if destination %}Edit{% else %}Add{% endif %} Destination</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        label { display: block; margin: 1rem 0 0.5rem; }
+        input, textarea { width: 100%; padding: 6px; box-sizing: border-box; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f9f9f9; }
+        .small { font-size: 0.9em; color: #555; }
+    </style>
+</head>
+<body>
+    <a href="{% url 'dest_admin_list' %}">&laquo; Back to Destinations</a>
+    <h1>{% if destination %}Edit{% else %}Add{% endif %} Destination</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_name">Name:</label>
+        <input type="text" id="id_name" name="name" value="{{ destination.name|default_if_none:'' }}" required>
+
+        <label for="id_overview">Overview:</label>
+        <textarea id="id_overview" name="overview" rows="4">{{ destination.overview|default_if_none:'' }}</textarea>
+
+        <button type="submit">{% if destination %}Update{% else %}Create{% endif %}</button>
+    </form>
+</body>
+</html>

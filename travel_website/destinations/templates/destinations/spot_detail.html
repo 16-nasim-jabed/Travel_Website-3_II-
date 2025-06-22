@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8"><title>{{ spot.name }}</title>
+<style>body{font-family:sans-serif;margin:2rem;}</style>
+</head><body>
+<a href="{{ spot.destination.get_absolute_url }}">&laquo; back to {{ spot.destination.name }}</a>
+<h1>{{ spot.name }}</h1>
+<p>{{ spot.overview }}</p>
+{% if spot.address %}<p><strong>Address:</strong> {{ spot.address }}</p>{% endif %}
+
+{% if spot.images.all %}
+  <h3>Gallery</h3>
+  {% for img in spot.images.all %}
+    <img src="{{ img.image.url }}" style="max-width:180px;margin:4px;">
+  {% endfor %}
+{% endif %}
+</body></html>

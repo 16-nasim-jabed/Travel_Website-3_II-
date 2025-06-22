@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spots – {{ destination.name }}</title>
+  <style>
+    body{font-family:sans-serif;margin:2rem;}
+    table{border-collapse:collapse;width:100%;}
+    th,td{border:1px solid #ccc;padding:6px;text-align:left;}
+  </style>
+</head>
+<body>
+  <h1>Spots for “{{ destination.name }}”</h1>
+  <p>
+    <a href="{% url 'dest_admin_add' %}">+ Add Destination</a> |
+    <a href="{% url 'dest_admin_list' %}">&laquo; Back to Destinations</a> |
+    <a href="{% url 'dest_admin_spot_add' dest_slug=destination.slug %}">+ Add Spot</a>
+  </p>
+
+  {% if spots %}
+    <table>
+      <tr><th>ID</th><th>Name</th><th>Created</th><th>Actions</th></tr>
+      {% for spot in spots %}
+        <tr>
+          <td>{{ spot.id }}</td>
+          <td>{{ spot.name }}</td>
+          <td>{{ spot.created_at|date:"Y-m-d H:i" }}</td>
+          <td>
+            <a href="{% url 'dest_admin_spot_edit' dest_slug=destination.slug spot_slug=spot.slug %}">Edit</a> |
+            <a href="{% url 'dest_admin_spot_delete' dest_slug=destination.slug spot_slug=spot.slug %}">Delete</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No spots yet.</p>
+  {% endif %}
+</body>
+</html>

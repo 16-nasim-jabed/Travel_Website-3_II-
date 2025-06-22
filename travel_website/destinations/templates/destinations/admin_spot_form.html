@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>
+  {% if spot %}Edit{% else %}Add{% endif %} Spot
+</title><style>
+  body{font-family:sans-serif;margin:2rem;}
+  label{display:block;margin:1rem 0 0.5rem;}
+  input,textarea{width:100%;padding:6px;}
+</style></head><body>
+<a href="{% url 'dest_admin_spot_list' dest_slug=destination.slug %}">&laquo; back</a>
+<h1>{% if spot %}Edit{% else %}Add{% endif %} Spot in {{ destination.name }}</h1>
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  <label>Name:</label>
+  <input name="name" value="{{ spot.name|default_if_none:'' }}" required>
+
+  <label>Overview:</label>
+  <textarea name="overview" rows="3">{{ spot.overview|default_if_none:'' }}</textarea>
+
+  <label>Address:</label>
+  <textarea name="address" rows="2">{{ spot.address|default_if_none:'' }}</textarea>
+
+  <label>Latitude:</label>
+  <input name="latitude" value="{{ spot.latitude|default_if_none:'' }}">
+
+  <label>Longitude:</label>
+  <input name="longitude" value="{{ spot.longitude|default_if_none:'' }}">
+
+  <label>Upload images (max 10):</label>
+  <input type="file" name="images" multiple accept="image/*">
+  {% if spot and spot.images.all %}
+    <div style="margin:0.5rem 0;">
+      <small>Uploading new images will replace existing ones.</small><br>
+      {% for img in spot.images.all %}
+        <img src="{{ img.image.url }}" style="max-width:100px;margin:3px;">
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <button type="submit">
+    {% if spot %}Update{% else %}Create{% endif %}
+  </button>
+</form>
+</body></html>

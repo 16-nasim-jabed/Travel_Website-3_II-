@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Add Offer</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        label { display: block; margin: 1rem 0 0.5rem; }
+        input, textarea, select { width: 100%; padding: 6px; box-sizing: border-box; }
+        .small { font-size: 0.9em; color: #555; }
+    </style>
+</head>
+<body>
+    <h1>Add Offer</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Destination selection -->
+        <label for="destination">Destination:</label>
+        <select name="destination" required>
+            <option value="">Select Destination</option>
+            {% for dest in destinations %}
+                <option value="{{ dest.slug }}">{{ dest.name }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Offer fields -->
+        <label for="offer_type">Offer Type:</label>
+        <select name="offer_type" required>
+            <option value="">Select Offer Type</option>
+            {% for code, label in offer_type_choices %}
+                <option value="{{ code }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="offer_description">Description:</label>
+        <textarea name="offer_description" rows="3" required></textarea>
+
+        <label for="offer_price">Price:</label>
+        <input type="number" step="0.01" name="offer_price" required>
+
+        <label for="offer_from">Available From:</label>
+        <input type="date" name="offer_from" required>
+
+        <label for="offer_to">Available To:</label>
+        <input type="date" name="offer_to" required>
+
+        <label for="offer_contact">Contact WhatsApp:</label>
+        <input type="text" name="offer_contact" required>
+
+        <label for="offer_images">Offer Images (max 10):</label>
+        <input type="file" name="offer_images" multiple accept="image/*">
+
+        <button type="submit">Add Offer</button>
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Confirm Delete Offer</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        label { display: block; margin: 1rem 0 0.5rem; }
+        input, textarea, select { width: 100%; padding: 6px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+    <h1>Are you sure you want to delete the offer: "{{ offer.type }}"?</h1>
+
+    <p>This action cannot be undone.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete this offer</button>
+        <a href="{% url 'dest_admin_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

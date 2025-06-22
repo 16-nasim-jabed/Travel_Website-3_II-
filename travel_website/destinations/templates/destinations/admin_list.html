@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Admin – Destinations</title>
+    <style>
+        body{font-family:sans-serif;margin:2rem;}
+        table{border-collapse:collapse;width:100%;}
+        th, td{border:1px solid #ccc;padding:6px;text-align:left;}
+        a{margin-right:.5rem;}
+    </style>
+</head>
+<body>
+    <h1>Admin Panel: Destinations</h1>
+    <p><a href="{% url 'dest_admin_add' %}">+ Add Destination</a></p>
+
+    {% if places %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+            {% for dest in places %}
+                <tr>
+                    <td>{{ dest.id }}</td>
+                    <td>{{ dest.name }}</td>
+                    <td>{{ dest.created_at|date:'Y-m-d H:i' }}</td>
+                    <td>
+                        <a href="{% url 'dest_admin_spot_list' dest_slug=dest.slug %}">Spots</a>|
+                        <a href="{% url 'dest_admin_edit' slug=dest.slug %}">Edit</a>|
+                        <a href="{% url 'dest_admin_delete' slug=dest.slug %}">Delete</a>|
+                                       <!-- Loop through offers -->
+                        {% for offer in dest.offers.all %}
+                           <a href="{% url 'dest_admin_offer_edit' id=offer.id %}">Edit Offer</a>
+
+
+                            <a href="{% url 'dest_admin_offer_delete' id=offer.id %}">Delete Offer</a>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No destinations.</p>
+    {% endif %}
+</body>
+</html>

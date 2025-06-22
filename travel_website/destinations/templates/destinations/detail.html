@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ place.name }}</title>
+</head>
+<body>
+  <h1>{{ place.name }}</h1>
+
+  <!-- Address & Roadmap -->
+  {% if place.address %}
+    <p><strong>Address:</strong> {{ place.address }}</p>
+  {% endif %}
+  {% if place.roadmap_instructions %}
+    <p><strong>How to get there:</strong><br>{{ place.roadmap_instructions }}</p>
+  {% endif %}
+
+  <!-- MapTiler Map Placeholder -->
+  {% if place.latitude and place.longitude %}
+    <div id="map" style="width:600px; height:400px;"></div>
+    <script>
+      // Initialize your MapTiler map here using:
+      // center: [{{ place.longitude }}, {{ place.latitude }}]
+    </script>
+  {% endif %}
+
+  <!-- Photo Gallery -->
+  <h2>Photos ({{ photos.count }})</h2>
+  <div style="display:flex; flex-wrap:wrap;">
+    {% for photo in photos %}
+      <div style="margin:5px;">
+        <img src="{{ photo.image.url }}" style="max-width:200px;">
+      </div>
+    {% empty %}
+      <p>No photos available.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Offers Section -->
+  <h2>Offers</h2>
+  {% if place.offers.exists %}
+    <ul>
+      {% for offer in place.offers.all %}
+        <li>
+          <strong>{{ offer.get_type_display }}:</strong> {{ offer.description }}<br>
+          Price: ${{ offer.price }}<br>
+          Available: {{ offer.available_from }} – {{ offer.available_to }}<br>
+          <a href="https://wa.me/{{ offer.contact_whatsapp|urlencode }}">
+            Contact via WhatsApp
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No offers listed for this destination.</p>
+  {% endif %}
+
+  <p><a href="{% url 'dest_list' %}">&laquo; Back to Destinations</a></p>
+</body>
+</html>

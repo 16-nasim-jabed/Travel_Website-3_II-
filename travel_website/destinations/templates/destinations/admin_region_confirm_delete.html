@@ -1,0 +1,8 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Delete Region</title></head>
+<body style="font-family:sans-serif;margin:2rem;">
+<h2>Delete “{{ destination.name }}”?</h2>
+<form method="post">{% csrf_token %}
+  <button type="submit">Yes, delete</button>
+</form>
+<a href="{% url 'dest_admin_list' %}">Cancel</a>
+</body></html>

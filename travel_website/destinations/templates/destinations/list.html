@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Destinations</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+      gap: 1rem;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 1rem;
+      box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+    }
+    .card h2 {
+      margin-top: 0;
+    }
+    .subgrid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .spot-card, .offer-card {
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 0.5rem;
+      background: #fafafa;
+      font-size: 0.9rem;
+    }
+    .offer-card { background: #f0f8ff; }
+    .section-title {
+      font-size: 1rem;
+      margin: 0.75rem 0 0.25rem;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>All Destinations</h1>
+  {% if destinations %}
+    <div class="grid">
+    {% for dest in destinations %}
+      <div class="card">
+        <h2>{{ dest.name }}</h2>
+        {% if dest.overview %}
+          <p>{{ dest.overview|truncatechars:100 }}</p>
+        {% endif %}
+
+        <div class="section-title">Spots ({{ dest.spots.count }})</div>
+        {% if dest.spots.all %}
+          <div class="subgrid">
+            {% for spot in dest.spots.all %}
+              <div class="spot-card">{{ spot.name }}</div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p><em>No spots added.</em></p>
+        {% endif %}
+
+        <div class="section-title">Offers ({{ dest.offers.count }})</div>
+        {% if dest.offers.all %}
+          <div class="subgrid">
+            {% for off in dest.offers.all %}
+              <div class="offer-card">
+                <strong>{{ off.get_type_display }}</strong><br>
+                {% if off.description %}{{ off.description }}<br>{% endif %}
+                <small>৳ {{ off.price }}</small><br>
+                <small>{{ off.available_from }} → {{ off.available_to }}</small>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p><em>No current offers.</em></p>
+        {% endif %}
+      </div>
+    {% endfor %}
+    </div>
+  {% else %}
+    <p>No destinations available yet.</p>
+  {% endif %}
+</body>
+</html>

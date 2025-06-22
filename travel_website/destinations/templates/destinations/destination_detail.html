@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ destination.name }} – TravelSite</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    h1, h2 { margin-top: 1.5rem; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5rem 0; }
+    a { text-decoration: none; color: #007bff; }
+    a:hover { text-decoration: underline; }
+    .offer, .spot { border-bottom: 1px solid #eee; padding: 0.5rem 0; }
+    .gallery { display: flex; flex-wrap: wrap; gap: 4px; margin: 0.5rem 0; }
+    .gallery img {
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+  <p><a href="{% url 'dest_public_list' %}">&laquo; Back to all destinations</a></p>
+
+  <h1>{{ destination.name }}</h1>
+  <p>{{ destination.overview|linebreaks }}</p>
+
+  <h2>Offers</h2>
+  {% if offers %}
+    <ul>
+      {% for offer in offers %}
+        <li class="offer">
+          <strong>{{ offer.get_type_display }}</strong><br>
+          {{ offer.description }}<br>
+          Price: ৳{{ offer.price }}<br>
+          Available: {{ offer.available_from }} to {{ offer.available_to }}<br>
+          <a href="https://wa.me/{{ offer.contact_whatsapp }}">Contact via WhatsApp</a>
+
+          <!-- ★★★ IMAGE GALLERY ★★★ -->
+          <div class="gallery">
+            {% if offer.images.all %}
+              {% for img in offer.images.all %}
+                <img src="{{ img.image.url }}" alt="Offer photo">
+              {% endfor %}
+            {% else %}
+              <em>No images for this offer.</em>
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No offers available for this destination.</p>
+  {% endif %}
+
+  <h2>Spots in {{ destination.name }}</h2>
+  {% if spots %}
+    <ul>
+      {% for spot in spots %}
+        <li class="spot">
+          <a href="{% url 'spot_detail' dest_slug=destination.slug spot_slug=spot.slug %}">
+            {{ spot.name }}
+          </a><br>
+          {{ spot.overview }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No spots defined yet.</p>
+  {% endif %}
+
+</body>
+</html>
